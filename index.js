@@ -1,7 +1,13 @@
-const express = require('express')
-const app = express();
+require('dotenv').config();
 
-app.set('view engine', 'hbs');
+const express = require('express');
+const hbs = require('hbs');
+
+const app = express();
+const port = process.env.PORT;
+
+app.set('view engine', 'hbs'); 
+hbs.registerPartials( __dirname + '/views/partials' );
 
 // Servir contenido estatico
 app.use( express.static( 'public' ));
@@ -14,12 +20,18 @@ app.get('/',  (req, res) => {
 });
 
 app.get('/generic' , (req, res) => {
-  res.sendFile( __dirname + '/public/generic.html')
-})
+  res.render('generic', {
+    title: 'Curso de Node.js',
+    name: 'Andres Mora'
+  });
+});
 
 app.get('/elements' , (req, res) => {
-  res.sendFile( __dirname + '/public/elements.html')
-})
+  res.render('elements', {
+    title: 'Curso de Node.js',
+    name: 'Andres Mora'
+  });
+});
 
 app.get('/hola-mundo',  (req, res) => {
     res.send('Hello World');
@@ -29,4 +41,6 @@ app.get('/hola-mundo',  (req, res) => {
     res.sendFile( __dirname + '/public/404.html');
 });
 
-app.listen(8080);
+app.listen(port, () => {
+  console.log(`Example app listening at ${port}`);
+});
